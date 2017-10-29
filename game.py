@@ -1,4 +1,5 @@
 from random import randint, shuffle
+from arrayutils import arrayContent,arrayCopy
 DICE = [
     ['a','a','e','e','g','n'],
     ['a','b','b','j','o','o'],
@@ -21,7 +22,6 @@ DICE = [
 def createboard():
     board = []
     for die in DICE:
-        print (die)
         idx = randint(0, 5)
         face = die[idx]
         board.append(face)
@@ -67,16 +67,38 @@ def tokenize(player_word):
         return tokens, is_valid
 
     print(tokens)
+def find_on_board(board,word_tokens):
+    return rec_find_on_board(board,word_tokens,[],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+
+def rec_find_on_board(board,word_tokens,visited,possibles):
+    word_idx = len(visited)
+    if word_idx == len(word_tokens):
+        return True
+    word_token = word_tokens[word_idx]
+    for board_idx in possibles:
+        board_token = board[board_idx]
+        if board_token == word_token:
+            if not arrayContent(visited, board_idx):
+                nextvisited = arrayCopy(visited)
+                nextvisited.append(board_idx)
+                found = rec_find_on_board(board,word_tokens,nextvisited,nextpossibles)
+                if found:
+                    return True
+
+    return False
+
 
 
 def main():
     board = createboard()
-    print (board)
     shuffle(board)
     printboard(board)
     player_word = input('find a word? ')
     print (player_word)
     tokens, is_valid = tokenize(player_word)
+    if is_valid:
+        is_on_board = find_on_board(board,tokens)
+        print(is_on_board)
 
 
 main()
