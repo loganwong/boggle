@@ -86,7 +86,26 @@ def rec_find_on_board(board,word_tokens,visited,possibles):
                     return True
 
     return False
-
+def findnextpossibles(board_index):
+    if board_index % 4 == 3:
+        unfilteredpossiblities = [
+          board_index - 5, board_index - 4, board_index - 3,
+          board_index - 1,                  board_index + 1,
+          board_index + 3, board_index + 4, board_index + 5,
+        ]
+    elif board_index % 4 == 0:
+        unfilteredpossiblities = [
+            board_index - 4, board_index - 3,
+            board_index + 1,
+            board_index + 4, board_index + 5,
+        ]
+    else:
+        unfilteredpossiblities = [
+            board_index - 5, board_index - 4,
+            board_index - 1,
+            board_index + 3, board_index + 4,
+        ]
+    filteredpossiblities = []
 
 
 def main():
