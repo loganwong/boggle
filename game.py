@@ -1,5 +1,6 @@
 from random import randint, shuffle
 from arrayutils import arrayContent,arrayCopy
+import BinarySearch as bs
 DICE = [
     ['a','a','e','e','g','n'],
     ['a','b','b','j','o','o'],
@@ -81,6 +82,7 @@ def rec_find_on_board(board,word_tokens,visited,possibles):
             if not arrayContent(visited, board_idx):
                 nextvisited = arrayCopy(visited)
                 nextvisited.append(board_idx)
+                nextpossibles = find_next_possibles(board_idx)
                 found = rec_find_on_board(board,word_tokens,nextvisited,nextpossibles)
                 if found:
                     return True
@@ -121,12 +123,29 @@ def main():
     board = createboard()
     shuffle(board)
     printboard(board)
-    player_word = input('find a word? ')
-    print (player_word)
-    tokens, is_valid = tokenize(player_word)
-    if is_valid:
-        is_on_board = find_on_board(board,tokens)
-        print(is_on_board)
+    found_words = []
+    while True:
+        player_word = input('find a word? ')
+        tokens, is_valid = tokenize(player_word)
+        is_valid = tokenize(player_word)
+        if not is_valid:
+            print("Couldn't tokenize")
+            continue
+        is_valid = find_on_board(board, tokens)
+        if not is_valid:
+            print("Not on board")
+            continue
+        is_valid = bs.find(lexicon, player_word)
+        if not is_valid:
+            print("Not in lexicon")
+            continue
+        is_valid = not arrayContent(found_words, player_word)
+        if not is_valid:
+            print("Words already used")
+            continue
+        found_words.append(player_word)
+        print("Word was valid")
+
 
 
 if __name__ == "__main__":
