@@ -86,7 +86,7 @@ def rec_find_on_board(board,word_tokens,visited,possibles):
                     return True
 
     return False
-def findnextpossibles(board_index):
+def find_next_possibles(board_index):
     if board_index % 4 == 3:
         unfilteredpossiblities = [
           board_index - 5, board_index - 4, board_index - 3,
@@ -106,9 +106,18 @@ def findnextpossibles(board_index):
             board_index + 3, board_index + 4,
         ]
     filteredpossiblities = []
+    for possible in unfilteredpossiblities:
+        if possible >= 0 and possible < 16:
+            filteredpossiblities.append(possible)
+    return filteredpossiblities
 
+def load_lexicon():
+    with open('twl06.txt')as f:
+        lexicon = f.read().splitlines()
+        return lexicon
 
 def main():
+    lexicon = load_lexicon()
     board = createboard()
     shuffle(board)
     printboard(board)
@@ -120,5 +129,6 @@ def main():
         print(is_on_board)
 
 
-main()
+if __name__ == "__main__":
+    main()
 
